@@ -16,26 +16,33 @@ const getWebsiteImmediately = async (req, res) => {
       website.website.startsWith("https://")
         ? website.website
         : `http://${website.website}`;
+
     try {
       const response = await axios.get(url, { timeout: 5000 });
-      console.log("Website response status:", response.status);
 
       if (response.status >= 200 && response.status < 300) {
         website.status = "Active";
-        await website.save();
-        return res.status(200).json({ msg: "Active", serverStatus: 200 });
       } else {
         website.status = "Down";
-        await website.save();
-        return res
-          .status(503)
-          .json({ msg: "Down", serverStatus: response.status });
       }
-    } catch (error) {
-      console.error(error);
-      website.status = "Down";
+      website.lastChecked = Date.now();
       await website.save();
-      return res.status(503).json({ msg: "Down", serverStatus: 503 });
+      return res.status(200).json({
+        msg: website.status,
+        serverStatus: response.status,
+        website,
+      });
+    } catch (error) {
+      console.error("Axios error:", error.message);
+      website.status = "Down";
+      website.lastChecked = Date.now();
+      await website.save();
+
+      return res.status(503).json({
+        msg: "Down",
+        serverStatus: error.response ? error.response.status : 503,
+        website,
+      });
     }
   } catch (error) {
     console.error("Server error:", error.message);

@@ -18,8 +18,12 @@ const checkStatusForAllWebsites = async () => {
           console.log(`User not found for website ${website.website}`);
           continue;
         }
-
-        const response = await axios.get(website.website, { timeout: 3000 });
+        const url =
+          website.website.startsWith("http://") ||
+          website.website.startsWith("https://")
+            ? website.website
+            : `http://${website.website}`;
+        const response = await axios.get(url, { timeout: 3000 });
 
         if (response.status === 200) {
           website.status = "Active";
@@ -32,7 +36,11 @@ const checkStatusForAllWebsites = async () => {
       } catch (error) {
         website.status = "Down";
         const user = await User.findById(website.user);
-        if (user && user.emailNotificationUser && website.notificationsEnabled) {
+        if (
+          user &&
+          user.emailNotificationUser &&
+          website.notificationsEnabled
+        ) {
           await sendMail(website.website, website.email, user._id);
         }
         console.error(`Error checking ${website.website}:`, error.message);

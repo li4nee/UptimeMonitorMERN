@@ -2,6 +2,12 @@ import Website from "../model/Website.model.js";
 
 const updateWebsiteNotification = async (req, res) => {
   try {
+    if (typeof req.body.notificationsEnabled !== "boolean") {
+      return res
+        .status(400)
+        .json({ error: "Invalid value for notificationsEnabled" });
+    }
+
     const website = await Website.findOne({
       _id: req.params.id,
       user: req.user.id,
