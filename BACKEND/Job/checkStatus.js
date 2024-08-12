@@ -4,6 +4,30 @@ import checkStatusForAllWebsites from "../businessLogic/checkStatusForAllWebsite
 import logger from "../config/logger.config.js";
 
 export const statusCheckQueue = new Queue("statusCheckQueue", {
+  defaultJobOptions: {
+    attempts: 3, // Number of times a job should be retried if it fails.
+
+    // Define a backoff strategy for retrying failed jobs.
+    backoff: {
+      type: "fixed",
+      delay: 10000, // Retry delay in milliseconds
+    },
+    removeOnComplete: true,
+    // removeOnFail: {
+    //     count:100,
+    //     age:60*60*24 // fail bhaye 24 ghanta samma bascha redis mai
+    // },
+    removeOnFail: true,
+  },
+  // Control the rate at which jobs are processed.
+  limiter: {
+    max: 100, // Maximum number of jobs to process per interval
+    duration: 60000, // Interval in milliseconds
+  },
+  settings: {
+    stalledInterval: 30000, // Time interval to check for stalled jobs
+    maxStalledCount: 3, // Maximum number of times a job can be stalled
+  },
   connection: client,
 });
 

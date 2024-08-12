@@ -48,7 +48,12 @@ const checkStatusForAllWebsites = async () => {
           user.emailNotificationUser &&
           website.notificationsEnabled
         ) {
-          await sendMail(website.website, website.email, user._id);
+          const payload = {
+            website: website.website,
+            email: website.email,
+            userId: user._id,
+          };
+          await emailQueue.add(emailJobName, payload);
         }
         logger.error(`${website.website} : ${error.message}`);
         console.error(`Error checking ${website.website}:`, error.message);

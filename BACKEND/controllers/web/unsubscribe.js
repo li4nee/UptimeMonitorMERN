@@ -8,12 +8,13 @@ const unsubscribe = async (req, res) => {
     }
     user.emailNotificationUser = false;
     await user.save();
-    res
-      .status(200)
-      .send("You have successfully unsubscribed from email notifications.");
+    res.status(200).send(`
+      <p>You have successfully unsubscribed from email notifications.</p>
+      <Strong>Please login again to get subscribe </Strong>
+    `);
   } catch (error) {
-    console.log(error)
-    logger.error(error?.message); 
+    console.log(error);
+    logger.error(error?.message);
     res.status(500).send("Server error");
   }
 };

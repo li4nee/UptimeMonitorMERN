@@ -31,7 +31,7 @@ mongoose
     console.log(e);
   });
 
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   try {
     await addStatusCheckJob();
     console.log("Status check job added to queue.");
