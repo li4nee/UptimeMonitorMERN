@@ -1,5 +1,5 @@
-import Website from "../model/Website.model.js";
-
+import Website from "../../model/Website.model.js";
+import logger from "../../config/logger.config.js";
 const updateWebsiteNotification = async (req, res) => {
   try {
     if (typeof req.body.notificationsEnabled !== "boolean") {
@@ -22,6 +22,7 @@ const updateWebsiteNotification = async (req, res) => {
       .json({ msg: "Notification preference updated successfully" });
   } catch (error) {
     console.error(error);
+    logger.error(error?.message);
     res.status(500).json({ error: "Server error" });
   }
 };

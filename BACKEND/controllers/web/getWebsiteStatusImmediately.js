@@ -1,6 +1,6 @@
 import axios from "axios";
-import Website from "../model/Website.model.js";
-
+import Website from "../../model/Website.model.js";
+import logger from "../../config/logger.config.js";
 const getWebsiteImmediately = async (req, res) => {
   try {
     const website = await Website.findOne({
@@ -34,6 +34,7 @@ const getWebsiteImmediately = async (req, res) => {
       });
     } catch (error) {
       console.error("Axios error:", error.message);
+      logger.error(error?.message);
       website.status = "Down";
       website.lastChecked = Date.now();
       await website.save();
@@ -46,6 +47,7 @@ const getWebsiteImmediately = async (req, res) => {
     }
   } catch (error) {
     console.error("Server error:", error.message);
+    logger.error(error?.message);
     return res.status(500).json({ error: "Server error" });
   }
 };

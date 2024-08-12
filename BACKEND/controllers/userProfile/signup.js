@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
-import User from "../model/User.model.js";
+import User from "../../model/User.model.js";
 import jwt from "jsonwebtoken";
+import logger from "../../config/logger.config.js";
 const signup = async (req, res) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
@@ -21,6 +22,7 @@ const signup = async (req, res) => {
     return res.status(200).json({ token, user: { username, email } });
   } catch (error) {
     console.log(error.message);
+    logger.error(error?.message);
     return res.status(500).json({ error: "Server error" });
   }
 };

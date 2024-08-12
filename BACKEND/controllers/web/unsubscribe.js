@@ -1,4 +1,5 @@
-import User from "../model/User.model.js";
+import User from "../../model/User.model.js";
+import logger from "../../config/logger.config.js";
 const unsubscribe = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -11,6 +12,8 @@ const unsubscribe = async (req, res) => {
       .status(200)
       .send("You have successfully unsubscribed from email notifications.");
   } catch (error) {
+    console.log(error)
+    logger.error(error?.message); 
     res.status(500).send("Server error");
   }
 };

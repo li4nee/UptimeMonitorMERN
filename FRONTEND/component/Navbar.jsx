@@ -41,7 +41,7 @@ function Navbar({whatToDisplay}) {
           >
            What People Say
           </Link>
-          <Link to="/signup">
+          <Link to="/login">
             <button className="bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded">
               {whatToDisplay}
             </button>
@@ -112,7 +112,7 @@ function Navbar({whatToDisplay}) {
             >
               What People Say
             </Link>
-            <Link to="/signup">
+            <Link to="/login">
               <button className="w-full no-underline bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-4 rounded mt-2">
                 Get Started
               </button>

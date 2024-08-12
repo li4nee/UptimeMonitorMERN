@@ -1,12 +1,12 @@
 import Router from "express";
 import authenticate from "../middleware/Authentication.middleware.js";
-import formhandle from "../controllers/formHandleForWebsite.js";
+import formhandle from "../controllers/web/formHandleForWebsite.js";
 import { formValidate } from "../utility/websiteFormValidation.js";
-import getAllWebsites from "../controllers/getAllWebsites.js";
-import deleteWebsite from "../controllers/deleteWebsite.js";
-import getWebsiteImmediately from "../controllers/getWebsiteStatusImmediately.js";
-import getPerformance from "../controllers/getPerformance.js";
-import updateWebsiteNotification from "../controllers/updateWebsiteNotification.js";
+import getAllWebsites from "../controllers/web/getAllWebsites.js";
+import deleteWebsite from "../controllers/web/deleteWebsite.js";
+import getWebsiteImmediately from "../controllers/web/getWebsiteStatusImmediately.js";
+import getPerformance from "../controllers/web/getPerformance.js";
+import updateWebsiteNotification from "../controllers/web/updateWebsiteNotification.js";
 const router = Router();
 
 router.post("/website", authenticate, formValidate, formhandle);

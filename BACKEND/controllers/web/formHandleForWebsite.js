@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
-import Website from "../model/Website.model.js";
-
+import Website from "../../model/Website.model.js";
+import logger from "../../config/logger.config.js";
 const formhandle = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -29,6 +29,7 @@ const formhandle = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during website addition:", error);
+    logger.error(error?.message);
     return res.status(500).json({ error: "Server error" });
   }
 };
