@@ -6,6 +6,7 @@ import UserRouter from "./routes/User.route.js";
 import ServiceRouter from "./routes/Service.route.js";
 import cron from "node-cron";
 import checkStatusForAllWebsites from "./businessLogic/checkStatusForAllWebsites.js";
+import { addStatusCheckJob } from "./Job/checkStatus.js";
 dotenv.config();
 
 const app = express();
@@ -30,6 +31,11 @@ mongoose
     console.log(e);
   });
 
-// cron.schedule('*/5 * * * *',()=>{
-//   checkStatusForAllWebsites();
-// });
+cron.schedule("*/5 * * * *", async () => {
+  try {
+    await addStatusCheckJob();
+    console.log("Status check job added to queue.");
+  } catch (error) {
+    console.error("Error adding status check job to queue:", error);
+  }
+});

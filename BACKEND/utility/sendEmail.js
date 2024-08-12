@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
+import logger from "../config/logger.config.js";
 
-const sendMail = async (website, email,userId) => {
+const sendMail = async (website, email, userId) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -44,7 +45,9 @@ Monitor Your Website Team`,
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error("Error sending email: ", error);
+      logger.error(`Error sending message ${error.message}`);
     } else {
+      logger.info(`${info.response}`);
       console.log("Email sent: ", info.response);
     }
   });
